@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-class Url():
+class Url(models.Model):
     """
     A base url
     """
@@ -15,3 +15,9 @@ class Url():
 
     def __unicode__(self):
         return self.base_url
+
+class Word(models.Model):
+    word = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.word
