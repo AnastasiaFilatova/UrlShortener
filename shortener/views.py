@@ -1,27 +1,36 @@
-from django.shortcuts import render
+from django.conf import settings
+from django.shortcuts import render, redirect
 from shortener import forms
 from models import Url, Word
 from urlparse import urlparse
-import re
-import logging
+from utils import shortificator
+import time
 
-
-logging.basicConfig(level=logging.DEBUG)
-
-def get_base_url(request):
-    logging.debug("get_base_url")
+def handle_form(request):
+    start = int(round(time.time()*1000))
     if request.method == 'POST':
         form = forms.UrlForm(request.POST)
         if form.is_valid():
-            url = dict()
-            url['old'] = form.cleaned_data['base_url']
-            url['new'] = shortificator(url['old'])
-            url_model = Url(id=hashlib.sha1(url['old']).hexdigest(), base_url=url['old'], short_url=url['new'])
-            url_model.save()
-            logging.debug('base_url saved {}'.format(form.cleaned_data['base_url']))
-            return render(request, 'answer.html', {'url': url})
+            url_path = urlparse(form.cleaned_data['base_url']).path
+            all_words = [word.word for word in list(Word.objects.all())]
+            used_words = [{'key': url.key, 'date': url.date} for url in list(Url.objects.all())]
+            key = shortificator(url_path, all_words, used_words)
+            new_url = Url(key=key, base_url=form.cleaned_data['base_url'],
+                          short_url="{}{}/".format(settings.SITE_URL, key))
+            new_url.save()
+            answer = dict()
+            answer['old'] = form.cleaned_data['base_url']
+            answer['new'] = new_url.short_url
+            answer['time'] = (float(round(time.time()*1000)) - start)/1000
+            return render(request, 'answer.html', {'url': answer})
         else:
-            logging.debug('base_url was not saved')
             return render(request, 'form.html', {'form': form })
     else:
         return render(request, 'form.html', {'form': forms.UrlForm() })
+
+def redirect_url(request):
+    key = request.path.strip('/')
+    url = Url.objects.get(key=key)
+    if url:
+        return redirect(url.base_url)
+    return render(request, '404.html')

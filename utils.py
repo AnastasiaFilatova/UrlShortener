@@ -1,7 +1,7 @@
 import random
+import multiprocessing
 import re
 import logging
-from multiprocessing import Pool
 
 # We are using global variable to pass as a second parameter to a matcher
 # function below that will be called from by pool.map
@@ -31,7 +31,7 @@ def shortificator(url, all_words, used_words):
     """
     global base_url
     base_url = url
-    pool = Pool(processes=8)
+    pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
     available_words = list(set(all_words) - set([item['key'] for item in used_words]))
     # If no available words return oldest
     if not available_words:

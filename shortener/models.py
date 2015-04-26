@@ -1,10 +1,9 @@
-from django.conf import settings
 from django.db import models
 
 class Url(models.Model):
     base_url = models.URLField()
     short_url = models.URLField()
-    id = models.CharField(max_length=100, primary_key=True)
+    key = models.CharField(max_length=100, primary_key=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
