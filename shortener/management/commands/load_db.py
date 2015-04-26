@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from shortener.models import Word
-from utils import Sanitizer
+from utils import sanitize
 import logging
+
 
 class Command(BaseCommand):
     help = 'Loads database from file'
@@ -14,11 +15,11 @@ class Command(BaseCommand):
                             help='load only first N rows')
 
     def handle(self, *args, **options):
-        if (options['debug']): logging.basicConfig(level=logging.DEBUG)
-        count=0
+        if options['debug']: logging.basicConfig(level=logging.DEBUG)
+        count = 0
         with open(options['file'], 'r') as file:
             for word in file:
-                Word(word=Sanitizer.sanitize(word)).save()
-                count+=1
-                if (options['limit'] == count): break
+                Word(word=sanitize(word)).save()
+                count += 1
+                if options['limit'] == count: break
         self.stdout.write('Successfully loaded {} words'.format(count))

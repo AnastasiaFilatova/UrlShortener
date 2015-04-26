@@ -11,9 +11,11 @@ import logging
 # more costly on large lists so we consider this short cut acceptable
 base_url = None
 
+
 def matcher(word):
     if re.findall(word, base_url):
         return word
+
 
 def shortificator(url, all_words, used_words):
     """
@@ -46,18 +48,15 @@ def shortificator(url, all_words, used_words):
     # Last resort. Return random from available
     return random.choice(available_words)
 
-class Sanitizer():
 
-    @staticmethod
-    def sanitize_from_file(filename):
-        with open(filename, 'r+') as file:
-            for word in file:
-                 if Sanitizer.sanitize(word):
-                     yield Sanitizer.sanitize(word)
+def sanitize_from_file(filename):
+    with open(filename, 'r+') as myfile:
+        for word in myfile:
+            if sanitize(word):
+                yield sanitize(word)
 
-    @staticmethod
-    def sanitize(word):
-        sanitized_word = re.sub("[^0-9a-z]+", '', word.lower())
-        logging.debug("'{}' after sanitation: {}".format(word.strip(), sanitized_word))
-        return sanitized_word
 
+def sanitize(word):
+    sanitized_word = re.sub("[^0-9a-z]+", '', word.lower())
+    logging.debug("'{}' after sanitation: {}".format(word.strip(), sanitized_word))
+    return sanitized_word

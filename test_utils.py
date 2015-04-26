@@ -2,10 +2,10 @@ import utils
 import unittest
 import re
 
-class TestSanitizer(unittest.TestCase):
+class TestUtils(unittest.TestCase):
 
     def test1(self):
-        words = utils.Sanitizer.sanitize_from_file('words.txt')
+        words = utils.sanitize_from_file('words.txt')
         with open('words.txt') as file:
             count = sum(1 for line in file)
         # Test that number of returned words is equal to number lines in the file
