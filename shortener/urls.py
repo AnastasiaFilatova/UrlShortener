@@ -1,8 +1,6 @@
-from django.conf.urls import include, url
-from shortener import views
+from django.conf.urls import include, url, patterns
+from shortener.views import get_base_url
 
-urlpatterns = [
-    url(r'^$', 'shortener.views.startpage', name='startpage'),
-    url(r'^$', 'views.get_base_url',
-        name='shortener.views.get_base_url'),
-]
+urlpatterns = patterns('',
+                       url(r'^$', get_base_url),
+                       )

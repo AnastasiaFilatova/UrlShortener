@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from shortener.models import Word
-from sanitizer import Sanitizer
+from utils import Sanitizer
 import logging
 
 class Command(BaseCommand):
