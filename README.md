@@ -18,7 +18,6 @@ Setup
 * ``git clone https://github.com/AnastasiaFilatova/UrlShortener.git``
 * ``mkvirtualenv <env_name>``
 * ``cd UrlShortener && pip install -r requirements.txt``
-* ``copy local.py to UrlShortener/UrlShortener/
 * ``python manage.py makemigrations``
 * ``python manage.py migrate``
 * ``python manage.py load_db words.txt [--debug]``
