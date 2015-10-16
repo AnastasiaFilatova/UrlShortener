@@ -15,8 +15,7 @@ db.sqlite3
 # Pycharm:
 .idea
 
-# Local settings
-/UrlShortener/local.py
+
 
 
 
