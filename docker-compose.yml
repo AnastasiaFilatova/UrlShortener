@@ -1,0 +1,18 @@
+data_storage:
+  image: postgres
+  volumes:
+    - /var/lib/postgresql/data:./db.sqlite3
+db:
+  image: postgres
+  volumes_from:
+    - data_storage
+
+web:
+  build: .
+  volumes:
+    - .:/UrlShortener
+  ports:
+    - "8001:8000"
+  links:
+    - db
+  

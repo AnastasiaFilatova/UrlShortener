@@ -4,6 +4,7 @@
 # Editor temp files:
 *~
 *.pyc
+*#
 
 # SQLite3 database files:
 *.db
